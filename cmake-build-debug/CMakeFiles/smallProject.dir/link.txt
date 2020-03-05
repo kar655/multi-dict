@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/smallProject.dir/main.c.o CMakeFiles/smallProject.dir/Avl_Tree_lib/avl_tree.c.o  -o smallProject 
