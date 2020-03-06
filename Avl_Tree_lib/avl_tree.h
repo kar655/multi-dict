@@ -9,22 +9,25 @@
 
 struct Node;
 
-typedef struct Node* avlTree;
+typedef struct Node* AvlTree;
 #define Node struct Node
 
-// Add new node to tree with value = key
-void insert(avlTree *tree, char *key);
+// Add new node to tree with name = key
+void insert(AvlTree *tree, char *key);
 
-// Print all values in tree
-void printAll(avlTree tree);
+// Print all names in tree
+void printAll(AvlTree tree);
 
-// Checks if tree contains node with value = key
-bool contains(avlTree tree, char *key);
+// Checks if tree contains node with name = key
+bool contains(AvlTree tree, char *key);
+
+// Returns dictionary connected to tree with name = key
+AvlTree *getDict(AvlTree tree, char *key);
 
 // Removes node with name = key
-// void remove(avlTree tree, char *key);
+// void remove(AvlTree tree, char *key);
 
-// Delete avlTree
-void removeAll(avlTree tree);
+// Delete AvlTree
+void removeAll(AvlTree tree);
 
 #endif //SMALLPROJECT_AVL_TREE_H

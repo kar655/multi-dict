@@ -8,15 +8,12 @@
 #include <stdlib.h>
 #include "avl_tree.h"
 
-#define INPUT_LENGTH 100
 
 Node {
-    // number of bottom-avl-trees
-    // int degree;
     char *name;
-    avlTree value;
+    AvlTree dict;
     int height;
-    avlTree left, right;
+    AvlTree left, right;
 };
 
 
@@ -29,30 +26,33 @@ int max(int a, int b);
 // returns pointer to copied string
 char *stringCopy(char *key);
 
+// creates new node
+AvlTree newNode(char *key);
+
 // returns tree's height
-int getHeight(avlTree tree);
+int getHeight(AvlTree tree);
 
 // updates height
-void correctHeight(avlTree tree);
+void correctHeight(AvlTree tree);
+
+// returns balance factor of node *tree
+int balanceFactor(AvlTree tree);
 
 // rotates left
-void rotateLeft(avlTree *tree);
+void rotateLeft(AvlTree *tree);
 
 // rotates right
-void rotateRight(avlTree *tree);
+void rotateRight(AvlTree *tree);
 
 // keeps logarithmic height
-void balance(avlTree *tree);
+void balance(AvlTree *tree, char *key);
 
 
 // Implementation
 // ----------------------------------------------------------------------------
 
 int max(int a, int b) {
-    if (a >= b)
-        return a;
-    else
-        return b;
+    return (a >= b) ? a : b;
 }
 
 
@@ -62,24 +62,33 @@ char *stringCopy(char *key) {
     return copied;
 }
 
-
-int getHeight(avlTree tree) {
-    if (tree == NULL)
-        return 0;
-    else
-        return tree->height;
+AvlTree newNode(char *key) {
+    AvlTree tree = malloc(sizeof(Node));
+    *tree = (Node) {stringCopy(key), NULL, 1, NULL, NULL};
+    return tree;
 }
 
 
-void correctHeight(avlTree tree) {
-    // tree->left->height = max(getHeight(tree->left->left), getHeight(tree->left->right)) + 1;
-    // tree->right->height = max(getHeight(tree->right->left), getHeight(tree->right->right)) + 1;
+int getHeight(AvlTree tree) {
+    return (tree == NULL) ? 0 : tree->height;
+}
+
+
+void correctHeight(AvlTree tree) {
     tree->height = max(getHeight(tree->left), getHeight(tree->right)) + 1;
 }
 
 
-void rotateLeft(avlTree *tree) {
-    avlTree rightTree = (*tree)->right;
+int balanceFactor(AvlTree tree) {
+    if (tree == NULL)
+        return 0;
+    else
+        return getHeight(tree->left) - getHeight(tree->right);
+}
+
+
+void rotateLeft(AvlTree *tree) {
+    AvlTree rightTree = (*tree)->right;
     (*tree)->right = rightTree->left;
     rightTree->left = *tree;
     correctHeight(*tree);
@@ -88,8 +97,8 @@ void rotateLeft(avlTree *tree) {
 }
 
 
-void rotateRight(avlTree *tree) {
-    avlTree leftTree = (*tree)->left;
+void rotateRight(AvlTree *tree) {
+    AvlTree leftTree = (*tree)->left;
     (*tree)->left = leftTree->right;
     leftTree->right = *tree;
     correctHeight(*tree);
@@ -98,30 +107,40 @@ void rotateRight(avlTree *tree) {
 }
 
 
-void balance(avlTree *tree) {
-    if (getHeight(*tree) <= 2 || abs(getHeight((*tree)->left) - getHeight((*tree)->right)) <= 1)
-        return;
-    else if (getHeight((*tree)->left) > getHeight((*tree)->right)) {
-        rotateRight(tree);
+void balance(AvlTree *tree, char *key) {
+    int comparison;
+    int bFactor = balanceFactor(*tree);
+
+    if (bFactor > 1) {
+        comparison = strcmp((*tree)->left->name, key);
+        if (comparison > 0) // left left
+            rotateRight(tree);
+        else { // left right
+            rotateLeft(&(*tree)->left);
+            rotateRight(tree);
+        }
     }
-    else { // getHeight(tree->left) < getHeight(tree->right)
-        rotateLeft(tree);
+    else if (bFactor < -1) {
+        comparison = strcmp((*tree)->right->name, key);
+        if (comparison > 0) { // right left
+            rotateRight(&(*tree)->right);
+            rotateLeft(tree);
+        }
+        else // right right
+            rotateLeft(tree);
     }
-    // TODO Correct ballancing
 }
 
 
-void insert(avlTree *tree, char *key) {
+void insert(AvlTree *tree, char *key) {
     if ((*tree) == NULL) {
-        *tree = malloc(sizeof(Node) + strlen(key));
-        **tree = (Node) {stringCopy(key), NULL, 1, NULL, NULL};
+        *tree = newNode(key);
         return;
     }
     int comparison = strcmp((*tree)->name, key);
     if (comparison == 0)
         return;
 
-    (*tree)->height++;
     if (comparison < 0) {
         insert(&((*tree)->right), key);
     }
@@ -129,11 +148,12 @@ void insert(avlTree *tree, char *key) {
         insert(&((*tree)->left), key);
     }
 
-    balance(tree);
+    correctHeight(*tree);
+    balance(tree, key);
 }
 
 
-void printAll(avlTree tree) {
+void printAll(AvlTree tree) {
     if (tree != NULL) {
         printAll(tree->left);
         printf("%s\n", tree->name);
@@ -141,26 +161,31 @@ void printAll(avlTree tree) {
     }
 }
 
-
-bool contains(avlTree tree, char *key) {
+AvlTree *getDict(AvlTree tree, char *key) {
     if (tree == NULL)
-        return false;
+        return NULL;
 
     int comparison = strcmp(tree->name, key);
     if (comparison == 0)
-        return true;
+        // wydaje mi sie ze powinien bys wskaznik do tego jeszcze
+        return &tree->dict;
     else if (comparison < 0)
-        return contains(tree->right, key);
+        return getDict(tree->right, key);
     else // comparison > 0
-        return contains(tree->left, key);
+        return getDict(tree->left, key);
 }
 
 
-void removeAll(avlTree tree) {
+bool contains(AvlTree tree, char *key) {
+    return getDict(tree, key) != NULL;
+}
+
+
+void removeAll(AvlTree tree) {
     if (tree != NULL) {
         removeAll(tree->left);
         removeAll(tree->right);
-        removeAll(tree->value);
+        removeAll(tree->dict);
         free(tree->name);
         free(tree);
     }

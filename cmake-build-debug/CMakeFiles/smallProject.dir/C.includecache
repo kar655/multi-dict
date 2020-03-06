@@ -6,21 +6,17 @@
 
 #IncludeRegexTransform: 
 
-/home/karol/Desktop/MIMUW/IPP/smallProject/Avl_Tree_lib/avl_tree.c
+/home/karol/Desktop/MIMUW/IPP/smallProject/Avl_Tree_lib/avl_tree.h
+stdbool.h
+-
 string.h
 -
+
+/home/karol/Desktop/MIMUW/IPP/smallProject/main.c
 stdio.h
--
-stdbool.h
 -
 stdlib.h
 -
-avl_tree.h
+Avl_Tree_lib/avl_tree.h
 /home/karol/Desktop/MIMUW/IPP/smallProject/Avl_Tree_lib/avl_tree.h
-
-/home/karol/Desktop/MIMUW/IPP/smallProject/Avl_Tree_lib/avl_tree.h
-stdbool.h
--
-string.h
--
 
