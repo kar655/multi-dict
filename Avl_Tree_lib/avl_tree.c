@@ -20,18 +20,100 @@ Node {
 };
 
 
-void balance(avlTree tree);
+// Helpers
+// ----------------------------------------------------------------------------
 
-char *stringCopy(char *key) {
-    char *cptr = malloc(INPUT_LENGTH);
-    strcpy(cptr, key);
-    return cptr;
+// returns bigger int
+int max(int a, int b);
+
+// returns pointer to copied string
+char *stringCopy(char *key);
+
+// returns tree's height
+int getHeight(avlTree tree);
+
+// updates height
+void correctHeight(avlTree tree);
+
+// rotates left
+void rotateLeft(avlTree *tree);
+
+// rotates right
+void rotateRight(avlTree *tree);
+
+// keeps logarithmic height
+void balance(avlTree *tree);
+
+
+// Implementation
+// ----------------------------------------------------------------------------
+
+int max(int a, int b) {
+    if (a >= b)
+        return a;
+    else
+        return b;
 }
 
-// Add new node to tree with value = key
+
+char *stringCopy(char *key) {
+    char *copied = malloc(strlen(key) + 1);
+    strcpy(copied, key);
+    return copied;
+}
+
+
+int getHeight(avlTree tree) {
+    if (tree == NULL)
+        return 0;
+    else
+        return tree->height;
+}
+
+
+void correctHeight(avlTree tree) {
+    // tree->left->height = max(getHeight(tree->left->left), getHeight(tree->left->right)) + 1;
+    // tree->right->height = max(getHeight(tree->right->left), getHeight(tree->right->right)) + 1;
+    tree->height = max(getHeight(tree->left), getHeight(tree->right)) + 1;
+}
+
+
+void rotateLeft(avlTree *tree) {
+    avlTree rightTree = (*tree)->right;
+    (*tree)->right = rightTree->left;
+    rightTree->left = *tree;
+    correctHeight(*tree);
+    correctHeight(rightTree);
+    *tree = rightTree;
+}
+
+
+void rotateRight(avlTree *tree) {
+    avlTree leftTree = (*tree)->left;
+    (*tree)->left = leftTree->right;
+    leftTree->right = *tree;
+    correctHeight(*tree);
+    correctHeight(leftTree);
+    *tree = leftTree;
+}
+
+
+void balance(avlTree *tree) {
+    if (getHeight(*tree) <= 2 || abs(getHeight((*tree)->left) - getHeight((*tree)->right)) <= 1)
+        return;
+    else if (getHeight((*tree)->left) > getHeight((*tree)->right)) {
+        rotateRight(tree);
+    }
+    else { // getHeight(tree->left) < getHeight(tree->right)
+        rotateLeft(tree);
+    }
+    // TODO Correct ballancing
+}
+
+
 void insert(avlTree *tree, char *key) {
     if ((*tree) == NULL) {
-        *tree = malloc(sizeof(Node));
+        *tree = malloc(sizeof(Node) + strlen(key));
         **tree = (Node) {stringCopy(key), NULL, 1, NULL, NULL};
         return;
     }
@@ -41,19 +123,16 @@ void insert(avlTree *tree, char *key) {
 
     (*tree)->height++;
     if (comparison < 0) {
-        // w prawo
         insert(&((*tree)->right), key);
     }
     else if (comparison > 0) {
-        // w lewo
         insert(&((*tree)->left), key);
     }
 
-    // TU MOZE BYC PRZYPS
-    // balance(*tree);
+    balance(tree);
 }
 
-// Print all values in tree
+
 void printAll(avlTree tree) {
     if (tree != NULL) {
         printAll(tree->left);
@@ -62,56 +141,27 @@ void printAll(avlTree tree) {
     }
 }
 
-// Checks if tree contains node with value = key
+
 bool contains(avlTree tree, char *key) {
     if (tree == NULL)
         return false;
 
     int comparison = strcmp(tree->name, key);
-
     if (comparison == 0)
         return true;
     else if (comparison < 0)
         return contains(tree->right, key);
     else // comparison > 0
         return contains(tree->left, key);
-
 }
 
-// Delete avlTree
+
 void removeAll(avlTree tree) {
     if (tree != NULL) {
         removeAll(tree->left);
         removeAll(tree->right);
+        removeAll(tree->value);
         free(tree->name);
         free(tree);
     }
 }
-
-int getHeight(avlTree tree) {
-    if (tree == NULL)
-        return 0;
-    else
-        return tree->height;
-}
-
-//void rotateLeft(avlTree tree) {
-//    return;
-//}
-//
-//void rotateRight(avlTree tree) {
-//    return;
-//}
-
-void balance(avlTree tree) {
-    if (getHeight(tree) < 1)
-        return;
-    else if (abs(getHeight(tree->left) - getHeight(tree->right)) <= 1)
-        return;
-//    else if (getHeight(tree->left) > getHeight(tree->right))
-//        rotateRight(tree);
-//    else // getHeight(tree->left) < getHeight(tree->right)
-//        rotateLeft(tree);
-}
-
-// strcmp() -- porownuje stringi
