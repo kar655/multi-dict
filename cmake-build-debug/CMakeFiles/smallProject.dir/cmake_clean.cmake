@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/smallProject.dir/Avl_Tree_lib/avl_tree.c.o"
+  "CMakeFiles/smallProject.dir/Input_Preprocessing/preprocessing.c.o"
+  "CMakeFiles/smallProject.dir/Input_Processing/processing.c.o"
   "CMakeFiles/smallProject.dir/main.c.o"
   "smallProject"
   "smallProject.pdb"

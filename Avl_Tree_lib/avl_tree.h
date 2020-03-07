@@ -18,14 +18,14 @@ void insert(AvlTree *tree, char *key);
 // Print all names in tree
 void printAll(AvlTree tree);
 
-// Checks if tree contains node with name = key
-bool contains(AvlTree tree, char *key);
-
 // Returns dictionary connected to tree with name = key
 AvlTree *getDict(AvlTree tree, char *key);
 
+// Checks if tree contains node with name = key
+bool contains(AvlTree tree, char *key);
+
 // Removes node with name = key
-// void remove(AvlTree tree, char *key);
+AvlTree deleteNode(AvlTree tree, char *key);
 
 // Delete AvlTree
 void removeAll(AvlTree tree);

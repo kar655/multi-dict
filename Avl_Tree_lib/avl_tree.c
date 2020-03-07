@@ -47,6 +47,10 @@ void rotateRight(AvlTree *tree);
 // keeps logarithmic height
 void balance(AvlTree *tree, char *key);
 
+// returns Node with minimal key value
+// of non-empty tree
+AvlTree minValueNode(AvlTree tree);
+
 
 // Implementation
 // ----------------------------------------------------------------------------
@@ -63,7 +67,7 @@ char *stringCopy(char *key) {
 }
 
 AvlTree newNode(char *key) {
-    AvlTree tree = malloc(sizeof(Node));
+    AvlTree tree = (AvlTree) malloc(sizeof(Node));
     *tree = (Node) {stringCopy(key), NULL, 1, NULL, NULL};
     return tree;
 }
@@ -131,6 +135,15 @@ void balance(AvlTree *tree, char *key) {
     }
 }
 
+AvlTree minValueNode(AvlTree tree) {
+    AvlTree current = tree;
+
+    while (current->left != NULL)
+        current = current->left;
+
+    return current;
+}
+
 
 void insert(AvlTree *tree, char *key) {
     if ((*tree) == NULL) {
@@ -178,6 +191,120 @@ AvlTree *getDict(AvlTree tree, char *key) {
 
 bool contains(AvlTree tree, char *key) {
     return getDict(tree, key) != NULL;
+}
+
+void copySingleNode(AvlTree copyTo, AvlTree copyFrom) {
+    // strcpy?
+    copyTo->dict = copyFrom->dict;
+    strcpy(copyTo->name, copyFrom->name);
+    free(copyFrom->name);
+    free(copyFrom);
+    // left and right must be null bcs it has to be balanced
+
+}
+
+AvlTree deleteNode(AvlTree tree, char *key) {
+    if (tree == NULL)
+        return NULL;
+
+    int comparison = strcmp(tree->name, key);
+
+    if (comparison < 0)
+        tree->right = deleteNode(tree->right, key);
+
+    else if (comparison > 0)
+        tree->left = deleteNode(tree->left, key);
+
+    else {
+        if (tree->left == NULL || tree->right == NULL) {
+            AvlTree temp = tree->left ? tree->left : tree->right;
+            // No child case
+            if (temp == NULL)
+            {
+                temp = tree;
+                removeAll(tree->dict);
+                free(tree->name);
+                tree = NULL;
+            }
+            else {// One child case
+                //copySingleNode(tree, temp);
+                free(tree->name);
+                *tree = *temp; // Copy the contents of
+            }
+
+            // the non-empty child
+            // TODO a nie powinno byc removeAll? chyba tak bo moze laczyc inne subDicts
+            // temp->left = temp->right = NULL;
+//            free(temp->name);
+//            free(temp->dict);
+            ///
+            free(temp);
+            // removeAll(temp);
+        }
+        else {
+            // node with two children: Get the inorder
+            // successor (smallest in the right subtree)
+            AvlTree temp = minValueNode(tree->right);
+
+            // Copy the inorder successor's
+            // data to this node
+            // ------------
+            free(tree->name);
+            tree->name = stringCopy(temp->name);
+            // ------------
+
+            tree->dict = temp->dict;
+
+            // Delete the inorder successor
+            tree->right = deleteNode(tree->right, temp->name);
+        }
+    }
+
+    // If the tree had only one node
+    // then return
+    if (tree == NULL)
+        return tree;
+
+    // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
+    correctHeight(tree);
+    // tree->height = 1 + max(height(root->left), height(root->right));
+
+    // STEP 3: GET THE BALANCE FACTOR OF
+    // THIS NODE (to check whether this
+    // node became unbalanced)
+    int balance = balanceFactor(tree);
+
+    // If this node becomes unbalanced,
+    // then there are 4 cases
+
+    // Left Left Case
+    if (balance > 1 && balanceFactor(tree->left) >= 0) {
+        rotateRight(&tree);
+        return tree;
+    }
+
+    // Left Right Case
+    if (balance > 1 && balanceFactor(tree->left) < 0)
+    {
+        rotateLeft(&tree->left);
+        rotateRight(&tree);
+        return tree;
+    }
+
+    // Right Right Case
+    if (balance < -1 && balanceFactor(tree->right) <= 0) {
+        rotateLeft(&tree);
+        return tree;
+    }
+    // Right Left Case
+    if (balance < -1 && balanceFactor(tree->right) > 0)
+    {
+        rotateRight(&tree->right);
+        rotateLeft(&tree);
+        return tree;
+    }
+
+    return tree;
 }
 
 

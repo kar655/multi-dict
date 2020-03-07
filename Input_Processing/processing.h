@@ -1,0 +1,8 @@
+//
+// Created by karol on 07/03/2020.
+//
+
+#ifndef SMALLPROJECT_PROCESSING_H
+#define SMALLPROJECT_PROCESSING_H
+
+#endif //SMALLPROJECT_PROCESSING_H

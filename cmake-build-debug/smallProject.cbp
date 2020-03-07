@@ -84,6 +84,18 @@
 		<Unit filename="/home/karol/Desktop/MIMUW/IPP/smallProject/Avl_Tree_lib/avl_tree.h">
 			<Option target="smallProject"/>
 		</Unit>
+		<Unit filename="/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Preprocessing/preprocessing.c">
+			<Option target="smallProject"/>
+		</Unit>
+		<Unit filename="/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Preprocessing/preprocessing.h">
+			<Option target="smallProject"/>
+		</Unit>
+		<Unit filename="/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Processing/processing.c">
+			<Option target="smallProject"/>
+		</Unit>
+		<Unit filename="/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Processing/processing.h">
+			<Option target="smallProject"/>
+		</Unit>
 		<Unit filename="/home/karol/Desktop/MIMUW/IPP/smallProject/main.c">
 			<Option target="smallProject"/>
 		</Unit>

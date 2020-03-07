@@ -5,6 +5,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
   "/home/karol/Desktop/MIMUW/IPP/smallProject/Avl_Tree_lib/avl_tree.c" "/home/karol/Desktop/MIMUW/IPP/smallProject/cmake-build-debug/CMakeFiles/smallProject.dir/Avl_Tree_lib/avl_tree.c.o"
+  "/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Preprocessing/preprocessing.c" "/home/karol/Desktop/MIMUW/IPP/smallProject/cmake-build-debug/CMakeFiles/smallProject.dir/Input_Preprocessing/preprocessing.c.o"
+  "/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Processing/processing.c" "/home/karol/Desktop/MIMUW/IPP/smallProject/cmake-build-debug/CMakeFiles/smallProject.dir/Input_Processing/processing.c.o"
   "/home/karol/Desktop/MIMUW/IPP/smallProject/main.c" "/home/karol/Desktop/MIMUW/IPP/smallProject/cmake-build-debug/CMakeFiles/smallProject.dir/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

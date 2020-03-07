@@ -150,6 +150,60 @@ Avl_Tree_lib/avl_tree.c.s:
 	$(MAKE) -f CMakeFiles/smallProject.dir/build.make CMakeFiles/smallProject.dir/Avl_Tree_lib/avl_tree.c.s
 .PHONY : Avl_Tree_lib/avl_tree.c.s
 
+Input_Preprocessing/preprocessing.o: Input_Preprocessing/preprocessing.c.o
+
+.PHONY : Input_Preprocessing/preprocessing.o
+
+# target to build an object file
+Input_Preprocessing/preprocessing.c.o:
+	$(MAKE) -f CMakeFiles/smallProject.dir/build.make CMakeFiles/smallProject.dir/Input_Preprocessing/preprocessing.c.o
+.PHONY : Input_Preprocessing/preprocessing.c.o
+
+Input_Preprocessing/preprocessing.i: Input_Preprocessing/preprocessing.c.i
+
+.PHONY : Input_Preprocessing/preprocessing.i
+
+# target to preprocess a source file
+Input_Preprocessing/preprocessing.c.i:
+	$(MAKE) -f CMakeFiles/smallProject.dir/build.make CMakeFiles/smallProject.dir/Input_Preprocessing/preprocessing.c.i
+.PHONY : Input_Preprocessing/preprocessing.c.i
+
+Input_Preprocessing/preprocessing.s: Input_Preprocessing/preprocessing.c.s
+
+.PHONY : Input_Preprocessing/preprocessing.s
+
+# target to generate assembly for a file
+Input_Preprocessing/preprocessing.c.s:
+	$(MAKE) -f CMakeFiles/smallProject.dir/build.make CMakeFiles/smallProject.dir/Input_Preprocessing/preprocessing.c.s
+.PHONY : Input_Preprocessing/preprocessing.c.s
+
+Input_Processing/processing.o: Input_Processing/processing.c.o
+
+.PHONY : Input_Processing/processing.o
+
+# target to build an object file
+Input_Processing/processing.c.o:
+	$(MAKE) -f CMakeFiles/smallProject.dir/build.make CMakeFiles/smallProject.dir/Input_Processing/processing.c.o
+.PHONY : Input_Processing/processing.c.o
+
+Input_Processing/processing.i: Input_Processing/processing.c.i
+
+.PHONY : Input_Processing/processing.i
+
+# target to preprocess a source file
+Input_Processing/processing.c.i:
+	$(MAKE) -f CMakeFiles/smallProject.dir/build.make CMakeFiles/smallProject.dir/Input_Processing/processing.c.i
+.PHONY : Input_Processing/processing.c.i
+
+Input_Processing/processing.s: Input_Processing/processing.c.s
+
+.PHONY : Input_Processing/processing.s
+
+# target to generate assembly for a file
+Input_Processing/processing.c.s:
+	$(MAKE) -f CMakeFiles/smallProject.dir/build.make CMakeFiles/smallProject.dir/Input_Processing/processing.c.s
+.PHONY : Input_Processing/processing.c.s
+
 main.o: main.c.o
 
 .PHONY : main.o
@@ -189,6 +243,12 @@ help:
 	@echo "... Avl_Tree_lib/avl_tree.o"
 	@echo "... Avl_Tree_lib/avl_tree.i"
 	@echo "... Avl_Tree_lib/avl_tree.s"
+	@echo "... Input_Preprocessing/preprocessing.o"
+	@echo "... Input_Preprocessing/preprocessing.i"
+	@echo "... Input_Preprocessing/preprocessing.s"
+	@echo "... Input_Processing/processing.o"
+	@echo "... Input_Processing/processing.i"
+	@echo "... Input_Processing/processing.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
