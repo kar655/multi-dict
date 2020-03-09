@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Avl_Tree_lib/avl_tree.h"
+#include "Input_Processing/processing.h"
+#include "Input_Preprocessing/preprocessing.h"
 
 void testGG() {
     AvlTree root = NULL;
@@ -82,51 +84,120 @@ void simpleDelTest() {
     //removeAll(tree);
 }
 
-void dictDelTest(char str[]) {
+void dictDelTest(char str1[], char str2[]) {
     AvlTree tree = NULL;
     insert(&tree, "a");
     insert(&tree, "aa");
     insert(&tree, "aaa");
-    printf("contains t/a: %d\n", contains(tree, "a"));
-    printf("contains t/aaa: %d\n", contains(tree, "aaa"));
+//    printf("contains t/a: %d\n", contains(tree, "a"));
+//    printf("contains t/aaa: %d\n", contains(tree, "aaa"));
 
-    insert(getDict(tree, "a"), "bbb");
-    insert(getDict(tree, "a"), "bb");
-    insert(getDict(tree, "a"), "b");
-    printAll(*getDict(tree, "a"));
+    insert(getDict(tree, str1), "bbb");
+    insert(getDict(tree, str1), "bb");
+    insert(getDict(tree, str1), "b");
+    printAll(*getDict(tree, str1));
 
-    printf("contains t/a/%s: %d\n", str, contains(*getDict(tree, "a"), str));
+    printf("contains tree/%s/%s: %d\n", str1, str2, contains(*getDict(tree, str1), str2));
 
-    deleteNode(*getDict(tree, "a"), str);
+    deleteNode(*getDict(tree, str1), str2);
 
-    printf("contains t/a/%s: %d\n", str, contains(*getDict(tree, "a"), str));
-    printf("contains t/b: %d\n", contains(tree, "b"));
+    printf("contains tree/%s/%s: %d\n", str1, str2, contains(*getDict(tree, str1), str2));
+    printf("contains tree/b: %d\n", contains(tree, "b"));
 
     removeAll(tree);
 }
 
+void multiTest() {
+    testGG();
+
+    simpleDelTest();
+
+    dictDelTest("a", "b");
+    printf("\n\n");
+    dictDelTest("a", "bb");
+    printf("\n\n");
+    dictDelTest("a", "bbb");
+    printf("\n\n");
+
+    dictDelTest("a", "c");
+    printf("\n\n");
+
+    dictDelTest("aa", "b");
+    printf("\n\n");
+    dictDelTest("aa", "bb");
+    printf("\n\n");
+    dictDelTest("aa", "bbb");
+    printf("\n\n");
+
+    dictDelTest("aaa", "b");
+    printf("\n\n");
+    dictDelTest("aaa", "bb");
+    printf("\n\n");
+    dictDelTest("aaa", "bbb");
+    printf("\n\n");
+}
+
+void jakiesZczytywanie() {
+    size_t words, n, inputSize = 10;
+    char *instructions = malloc(inputSize * sizeof(char));
+    char *ptr;
+
+    words = n = 0;
+    // fgets(instructions, inputSize, stdin) != NULL
+    // scanf("%s", instructions) == 1
+    while (fgets(instructions, inputSize, stdin) != NULL) {
+        // allocates new memory ---------------------------------------------------
+        ++n;
+        if (n >= inputSize) {
+            inputSize *= 2;
+            instructions = realloc(instructions, inputSize * sizeof(char));
+        }
+        // ------------------------------------------------------------------------
+
+        ptr = strtok(instructions, " ");
+        while (ptr) {
+            words++;
+            // puts(ptr);
+            ptr = strtok(NULL, " ");
+        }
+        printf("%zu\n", words);
+    }
+
+    free(instructions);
+}
+
+void nibyDzialaAleNieWypisujeOdRazu() {
+
+}
+
 int main() {
 
-//    AvlTree LASY = NULL;
-//    char str[100];
-//    while (scanf("%s", str) == 1) {
-//        insert(&LASY, &str[0]);
+
+    // ------------------------------------------------------------------------
+    //multiTest();
+    // ------------------------------------------------------------------------
+
+//    char *line = NULL;
+//    size_t len = 0;
+//    ssize_t read = 0;
+//    while (read != -1) {
+//        puts("enter a line");
+//        read = getline(&line, &len, stdin);
+//        printf("line = %s", line);
+//        printf("line length = %zu\n", read);
+//        fflush(stdout);
 //    }
-//    printAll(LASY);
+//    free(line);
+
+    resetAll();
+    while (processLine());
 
 
-    // ------------------------------------------------------------------------
-//    testGG();
-//    simpleDelTest();
-//    dictDelTest("b");
-//    printf("\n\n");
-//    dictDelTest("bb");
-//    printf("\n\n");
-//    dictDelTest("bbb");
-//    printf("\n\n");
-//    dictDelTest("c");
-//    printf("\n\n");
-    // ------------------------------------------------------------------------
+    // nibyDzialaAleNieWypisujeOdRazu();
+
+
+    // resetAll();
+    // perform(array);
 
     return 0;
 }

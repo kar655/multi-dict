@@ -12,6 +12,22 @@ stdbool.h
 string.h
 -
 
+/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Preprocessing/preprocessing.c
+preprocessing.h
+/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Preprocessing/preprocessing.h
+stdio.h
+-
+stdlib.h
+-
+
+/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Preprocessing/preprocessing.h
+stdbool.h
+-
+
+/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Processing/processing.h
+../Avl_Tree_lib/avl_tree.h
+/home/karol/Desktop/MIMUW/IPP/smallProject/Avl_Tree_lib/avl_tree.h
+
 /home/karol/Desktop/MIMUW/IPP/smallProject/main.c
 stdio.h
 -
@@ -19,4 +35,8 @@ stdlib.h
 -
 Avl_Tree_lib/avl_tree.h
 /home/karol/Desktop/MIMUW/IPP/smallProject/Avl_Tree_lib/avl_tree.h
+Input_Processing/processing.h
+/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Processing/processing.h
+Input_Preprocessing/preprocessing.h
+/home/karol/Desktop/MIMUW/IPP/smallProject/Input_Preprocessing/preprocessing.h
 

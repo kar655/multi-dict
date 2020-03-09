@@ -4,5 +4,8 @@
 
 #ifndef SMALLPROJECT_PREPROCESSING_H
 #define SMALLPROJECT_PREPROCESSING_H
+#include <stdbool.h>
+
+bool processLine();
 
 #endif //SMALLPROJECT_PREPROCESSING_H

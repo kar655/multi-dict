@@ -12,6 +12,8 @@ struct Node;
 typedef struct Node* AvlTree;
 #define Node struct Node
 
+char *stringCopy(char *key);
+
 // Add new node to tree with name = key
 void insert(AvlTree *tree, char *key);
 
@@ -26,6 +28,8 @@ bool contains(AvlTree tree, char *key);
 
 // Removes node with name = key
 AvlTree deleteNode(AvlTree tree, char *key);
+
+bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len);
 
 // Delete AvlTree
 void removeAll(AvlTree tree);

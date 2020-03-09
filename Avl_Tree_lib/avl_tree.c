@@ -47,6 +47,9 @@ void rotateRight(AvlTree *tree);
 // keeps logarithmic height
 void balance(AvlTree *tree, char *key);
 
+// keeps logarithmic height
+void balanceAfterDel(AvlTree *tree);
+
 // returns Node with minimal key value
 // of non-empty tree
 AvlTree minValueNode(AvlTree tree);
@@ -135,6 +138,28 @@ void balance(AvlTree *tree, char *key) {
     }
 }
 
+// TODO cos z balnacami zeby skrocic
+void balanceAfterDel(AvlTree *tree) {
+    int bFactor = balanceFactor(*tree);
+
+    if (bFactor > 1) {
+        if (balanceFactor((*tree)->left) >= 0) // left left
+            rotateRight(tree);
+        else { // left right
+            rotateLeft(&(*tree)->left);
+            rotateRight(tree);
+        }
+    }
+    else if (bFactor < -1) {
+        if (balanceFactor((*tree)->right) <= 0) // right right
+            rotateLeft(tree);
+        else { // right left
+            rotateRight(&(*tree)->right);
+            rotateLeft(tree);
+        }
+    }
+}
+
 AvlTree minValueNode(AvlTree tree) {
     AvlTree current = tree;
 
@@ -174,34 +199,48 @@ void printAll(AvlTree tree) {
     }
 }
 
+AvlTree getNode(AvlTree tree, char *key) {
+    if (tree == NULL)
+        return NULL;
+
+    int comparison = strcmp(tree->name, key);
+    if (comparison == 0) // found
+        return tree;
+    else if (comparison < 0) // look right
+        return getNode(tree->right, key);
+    else // comparison > 0 // look left
+        return getNode(tree->left, key);
+}
+
+
 AvlTree *getDict(AvlTree tree, char *key) {
     if (tree == NULL)
         return NULL;
 
     int comparison = strcmp(tree->name, key);
-    if (comparison == 0)
-        // wydaje mi sie ze powinien bys wskaznik do tego jeszcze
+    if (comparison == 0) // found
         return &tree->dict;
-    else if (comparison < 0)
+    else if (comparison < 0) // look right
         return getDict(tree->right, key);
-    else // comparison > 0
+    else // comparison > 0 // look left
         return getDict(tree->left, key);
 }
 
 
 bool contains(AvlTree tree, char *key) {
-    return getDict(tree, key) != NULL;
+//    return getDict(tree, key) != NULL;
+    if (tree == NULL)
+        return false;
+
+    int comparison = strcmp(tree->name, key);
+    if (comparison == 0) // found
+        return true;
+    else if (comparison < 0) // look right
+        return contains(tree->right, key);
+    else // comparison > 0 // look left
+        return contains(tree->left, key);
 }
 
-void copySingleNode(AvlTree copyTo, AvlTree copyFrom) {
-    // strcpy?
-    copyTo->dict = copyFrom->dict;
-    strcpy(copyTo->name, copyFrom->name);
-    free(copyFrom->name);
-    free(copyFrom);
-    // left and right must be null bcs it has to be balanced
-
-}
 
 AvlTree deleteNode(AvlTree tree, char *key) {
     if (tree == NULL)
@@ -211,10 +250,8 @@ AvlTree deleteNode(AvlTree tree, char *key) {
 
     if (comparison < 0)
         tree->right = deleteNode(tree->right, key);
-
     else if (comparison > 0)
         tree->left = deleteNode(tree->left, key);
-
     else {
         if (tree->left == NULL || tree->right == NULL) {
             AvlTree temp = tree->left ? tree->left : tree->right;
@@ -226,87 +263,63 @@ AvlTree deleteNode(AvlTree tree, char *key) {
                 free(tree->name);
                 tree = NULL;
             }
-            else {// One child case
-                //copySingleNode(tree, temp);
+            else { // One child case
                 free(tree->name);
-                *tree = *temp; // Copy the contents of
+                *tree = *temp; // Copy the contents
             }
-
             // the non-empty child
-            // TODO a nie powinno byc removeAll? chyba tak bo moze laczyc inne subDicts
-            // temp->left = temp->right = NULL;
-//            free(temp->name);
-//            free(temp->dict);
-            ///
             free(temp);
-            // removeAll(temp);
         }
         else {
-            // node with two children: Get the inorder
-            // successor (smallest in the right subtree)
+            // node with two children
             AvlTree temp = minValueNode(tree->right);
 
-            // Copy the inorder successor's
-            // data to this node
-            // ------------
             free(tree->name);
             tree->name = stringCopy(temp->name);
-            // ------------
-
             tree->dict = temp->dict;
 
-            // Delete the inorder successor
+            // Delete copied
             tree->right = deleteNode(tree->right, temp->name);
         }
     }
 
-    // If the tree had only one node
-    // then return
     if (tree == NULL)
         return tree;
 
     // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
     correctHeight(tree);
-    // tree->height = 1 + max(height(root->left), height(root->right));
-
-    // STEP 3: GET THE BALANCE FACTOR OF
-    // THIS NODE (to check whether this
-    // node became unbalanced)
-    int balance = balanceFactor(tree);
-
-    // If this node becomes unbalanced,
-    // then there are 4 cases
-
-    // Left Left Case
-    if (balance > 1 && balanceFactor(tree->left) >= 0) {
-        rotateRight(&tree);
-        return tree;
-    }
-
-    // Left Right Case
-    if (balance > 1 && balanceFactor(tree->left) < 0)
-    {
-        rotateLeft(&tree->left);
-        rotateRight(&tree);
-        return tree;
-    }
-
-    // Right Right Case
-    if (balance < -1 && balanceFactor(tree->right) <= 0) {
-        rotateLeft(&tree);
-        return tree;
-    }
-    // Right Left Case
-    if (balance < -1 && balanceFactor(tree->right) > 0)
-    {
-        rotateRight(&tree->right);
-        rotateLeft(&tree);
-        return tree;
-    }
+    balanceAfterDel(&tree);
 
     return tree;
 }
 
+// iterates over tree
+//void iterate(AvlTree tree, int depth, void (*f)()) {
+//    if (tree != NULL) {
+//        iterate(tree->left, depth - 1, f);
+//    }
+//}
+
+bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len) {
+    if (i >= len)
+        return true;
+    if (tree == NULL) {
+        return false;
+    }
+
+    if (strcmp(commands[i], "*") != 0) {
+
+        AvlTree found = getNode(tree, commands[i]);
+        if (found == NULL)
+            return false;
+        return iterateOverAllNodes(found->dict, commands, i + 1, len);
+    }
+
+    return iterateOverAllNodes(tree->dict, commands, i + 1, len) ||
+        iterateOverAllNodes(tree->left, commands, i, len) ||
+        iterateOverAllNodes(tree->right, commands, i, len);
+
+}
 
 void removeAll(AvlTree tree) {
     if (tree != NULL) {
