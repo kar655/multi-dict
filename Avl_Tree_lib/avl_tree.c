@@ -264,6 +264,7 @@ AvlTree deleteNode(AvlTree tree, char *key) {
                 tree = NULL;
             }
             else { // One child case
+                removeAll(tree->dict); // ???
                 free(tree->name);
                 *tree = *temp; // Copy the contents
             }
@@ -276,6 +277,7 @@ AvlTree deleteNode(AvlTree tree, char *key) {
 
             free(tree->name);
             tree->name = stringCopy(temp->name);
+            removeAll(tree->dict); // ???
             tree->dict = temp->dict;
 
             // Delete copied

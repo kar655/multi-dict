@@ -56,6 +56,8 @@ void del(char *commands[], int len) {
     if (dict == NULL)
         return;
 
+    // sprawdzac czy cos usunalem w ogole
+    // na pale contains i dopiero ???
     *giveDict(sub, len - 1) = deleteNode(*dict, commands[len - 1]);
 
 
@@ -84,16 +86,8 @@ void print(char *commands[], int len) {
     AvlTree *toPrint = giveDict(commands, len);
     if (toPrint != NULL)
         printAll(*toPrint);
-//    if (len <= 0) {
-//        printAll(data);
-//    }
-//    else if (len <= 1) {
-//        printAll(*getDict(data, commands[0]));
-//    }
-//    else if (len <= 2) {
-//        printAll(*getDict(*getDict(data, commands[0]), commands[1]));
-//    }
 }
+
 
 void checkPrinter(bool present) {
     if (present)
@@ -102,36 +96,19 @@ void checkPrinter(bool present) {
         printf("NO\n");
 }
 
+
 void check(char *commands[], int len) {
 
-    // blad jak wyszukuja "check a b" ale nie mam nawet a
-    // jeszcze te * durnowate
-    if (len == 3 && strcmp(commands[3], "*") == 0) {
+    // 3rd command is "*"
+    if (len == 3 && strcmp(commands[2], "*") == 0)
         printf("ERROR");
-        return;
-    }
-
-
-    checkPrinter(iterateOverAllNodes(data, commands, 0, len));
-
-// TODO z *
-
-    // checkPrinter(giveDict(commands, len) != NULL);
-
-//    if (len <= 1) {
-//        checkPrinter(contains(data, commands[0]));
-//    }
-//    else if (len <= 2) {
-//        checkPrinter(contains(*getDict(data, commands[0]), commands[1]));
-//    }
-//    else if (len <= 3) {
-//        checkPrinter(contains(*getDict(*getDict(data, commands[0]),
-//                commands[1]), commands[2]));
-//    }
+    else
+        checkPrinter(iterateOverAllNodes(data, commands, 0, len));
 }
 
 
 void resetAll() {
+    removeAll(data);
     data = NULL;
 }
 
@@ -159,5 +136,4 @@ void perform(char *operation, char *commands[], int len) {
     }
     else
         printf("ERROR\n");
-
 }

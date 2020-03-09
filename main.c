@@ -190,7 +190,9 @@ int main() {
 //    free(line);
 
     resetAll();
-    while (processLine());
+    while (processLine())
+        fflush(stdout);
+    resetAll();
 
 
     // nibyDzialaAleNieWypisujeOdRazu();
