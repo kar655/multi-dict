@@ -43,16 +43,19 @@ bool processLine() {
     char *instructions = malloc(inputSize * sizeof(char));
     char *array[4];
 
-
-    ssize_t read = getline(&instructions, &inputSize, stdin);
+    //jaki ssssize xd?
+    size_t read = getline(&instructions, &inputSize, stdin);
     if (read == -1) {
         free(instructions);
         return false;
     }
 
     char *p = strtok(instructions, " \t\v\f\r\n");
-    if (strcmp(p, "#") == 0)
+    if (strcmp(p, "#") == 0) {
+        // free(instructions);
+        free(p);
         return read != -1;
+    }
 
     int i = 0;
     while (p != NULL) {
