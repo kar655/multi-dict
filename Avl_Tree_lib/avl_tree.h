@@ -29,6 +29,8 @@ bool contains(AvlTree tree, char *key);
 // Removes node with name = key
 AvlTree deleteNode(AvlTree tree, char *key);
 
+// Looks for specific node
+// when '*' passed looks in all nodes
 bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len);
 
 // Delete AvlTree

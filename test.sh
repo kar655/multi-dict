@@ -1,5 +1,6 @@
 #!/bin/bash
 # ./test.sh ./forests dir
+make
 passed=0
 all=0
 
@@ -9,7 +10,8 @@ do
   tmpOut=$(mktemp "XXXXXX.out")
   tmpErr=$(mktemp "XXXXXX.err")
 
-  $1 <"$f" >"$tmpOut" 2>"$tmpErr"
+  # "$1" <"$f" >"$tmpOut" 2>"$tmpErr"
+  valgrind -q --error-exitcode=15 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "$1" <"$f" >"$tmpOut" 2>"$tmpErr"
 
   if diff -q "${f%in}out" "$tmpOut" && diff -q "${f%in}err" "$tmpErr"
   then
@@ -25,3 +27,4 @@ do
 done
 
 echo "Passed $passed / $all"
+make clean

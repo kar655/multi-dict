@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/smallProject.dir/main.c.o CMakeFiles/smallProject.dir/Avl_Tree_lib/avl_tree.c.o CMakeFiles/smallProject.dir/Input_Processing/processing.c.o CMakeFiles/smallProject.dir/Input_Preprocessing/preprocessing.c.o  -o smallProject 
