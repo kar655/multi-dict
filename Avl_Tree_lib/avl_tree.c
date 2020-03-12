@@ -64,7 +64,8 @@ int max(int a, int b) {
 
 
 char *stringCopy(char *key) {
-    char *copied = malloc(strlen(key) + 1);
+//    printf("%lu\n", strlen(key));
+    char *copied = (char*) malloc((strlen(key) + 1) * sizeof(char));
     strcpy(copied, key);
     return copied;
 }

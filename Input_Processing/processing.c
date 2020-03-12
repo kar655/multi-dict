@@ -30,6 +30,11 @@ AvlTree *giveDict(char *names[], int len) {
 
 void add(char *commands[], int len) {
 
+    if (len == 0) {
+        fprintf(stderr, "ERROR\n");
+        return;
+    }
+
     if (len >= 1)
         insert(&data, commands[0]);
     if (len >= 2)
@@ -79,7 +84,7 @@ void del(char *commands[], int len) {
 void print(char *commands[], int len) {
 
     if (len >= 3) {
-        printf("ERROR\n");
+        fprintf(stderr, "ERROR\n");
         return;
     }
 
@@ -100,8 +105,9 @@ void checkPrinter(bool present) {
 void check(char *commands[], int len) {
 
     // 3rd command is "*"
-    if (len == 3 && strcmp(commands[2], "*") == 0)
-        printf("ERROR");
+    // if (len == 3 && strcmp(commands[2], "*") == 0)
+    if (len == 0 || strcmp(commands[len - 1], "*") == 0)
+        fprintf(stderr, "ERROR\n");
     else
         checkPrinter(iterateOverAllNodes(data, commands, 0, len));
 }
@@ -135,5 +141,5 @@ void perform(char *operation, char *commands[], int len) {
         check(commands, len);
     }
     else
-        printf("ERROR\n");
+        fprintf(stderr, "ERROR\n");
 }
