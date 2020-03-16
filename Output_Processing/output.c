@@ -68,6 +68,7 @@ static void del(char *commands[], int len) {
 
     if (len == 0) {
         resetAll();
+        printf("OK\n");
         return;
     }
 
@@ -77,15 +78,17 @@ static void del(char *commands[], int len) {
         sub[i] = commands[i];
     }
     AvlTree *dict = giveDict(sub, len - 1);
-    if (dict == NULL)
+    if (dict == NULL) {
+        printf("OK\n");
         return;
+    }
 
     // sprawdzac czy cos usunalem w ogole
     // na pale contains i dopiero ???
-    *giveDict(sub, len - 1) = deleteNode(*dict, commands[len - 1]);
-
+    *giveDict(sub, len - 1) = deleteNode(*dict, commands[len - 1], false);
 
     printf("OK\n");
+
 }
 
 

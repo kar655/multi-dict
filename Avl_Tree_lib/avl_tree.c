@@ -51,7 +51,7 @@ static void balanceAfterDel(AvlTree *tree);
 // of non-empty tree
 static AvlTree minValueNode(AvlTree tree);
 
-static void delNodeHelper(AvlTree *tree);
+static void delNodeHelper(AvlTree *tree, bool dictCopied);
 
 
 // Implementation
@@ -233,19 +233,23 @@ bool contains(AvlTree tree, char *key) {
     return getNode(tree, key) != NULL;
 }
 
-static void delNodeHelper(AvlTree *tree) {
+static void delNodeHelper(AvlTree *tree, bool dictCopied) {
     if ((*tree)->left == NULL || (*tree)->right == NULL) {
         // not Null child
         AvlTree temp = (*tree)->left ? (*tree)->left : (*tree)->right;
 
         if (temp == NULL) { // No child case
-            temp = *tree;
-            removeAll((*tree)->dict);
+            if (!dictCopied) {
+                removeAll((*tree)->dict);
+            }
             free((*tree)->name);
+            free(*tree);
             *tree = NULL;
         }
         else { // One child case
-            removeAll((*tree)->dict); // TODO chyba nie potrzebne
+            if (!dictCopied) {
+                removeAll((*tree)->dict); // TODO chyba nie potrzebne
+            }
             free((*tree)->name);
             **tree = *temp; // Copy the contents
         }
@@ -257,28 +261,32 @@ static void delNodeHelper(AvlTree *tree) {
         AvlTree temp = minValueNode((*tree)->right);
 
         free((*tree)->name);
+        (*tree)->name = NULL;
         (*tree)->name = stringCopy(temp->name);
+
         removeAll((*tree)->dict);
+        (*tree)->dict = NULL;
         (*tree)->dict = temp->dict;
 
         // Delete copied
-        (*tree)->right = deleteNode((*tree)->right, temp->name);
+        /// usunac ale nie usuwac dict bo skopiowalem
+        (*tree)->right = deleteNode((*tree)->right, temp->name, true);
     }
 }
 
 
-AvlTree deleteNode(AvlTree tree, char *key) {
+AvlTree deleteNode(AvlTree tree, char *key, bool dictCopied) {
     if (tree == NULL)
         return NULL;
 
     int comparison = strcmp(tree->name, key);
 
     if (comparison < 0)
-        tree->right = deleteNode(tree->right, key);
+        tree->right = deleteNode(tree->right, key, dictCopied);
     else if (comparison > 0)
-        tree->left = deleteNode(tree->left, key);
+        tree->left = deleteNode(tree->left, key, dictCopied);
     else { // comparison == 0
-        delNodeHelper(&tree);
+        delNodeHelper(&tree, dictCopied);
     }
 
     if (tree == NULL)
@@ -317,9 +325,14 @@ bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len) {
 void removeAll(AvlTree tree) {
     if (tree != NULL) {
         removeAll(tree->left);
+        tree->left = NULL;
         removeAll(tree->right);
+        tree->right = NULL;
         removeAll(tree->dict);
+        tree->dict = NULL;
         free(tree->name);
+        tree->name = NULL;
         free(tree);
+        tree = NULL;
     }
 }

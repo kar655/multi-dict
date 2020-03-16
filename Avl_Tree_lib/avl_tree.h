@@ -27,7 +27,7 @@ AvlTree *getDict(AvlTree tree, char *key);
 bool contains(AvlTree tree, char *key);
 
 // Removes node with name = key
-AvlTree deleteNode(AvlTree tree, char *key);
+AvlTree deleteNode(AvlTree tree, char *key, bool dictCopied);
 
 // Looks for specific node
 // when '*' passed looks in all nodes
