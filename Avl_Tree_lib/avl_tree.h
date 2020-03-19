@@ -2,10 +2,11 @@
 // Created by karol on 05/03/2020.
 //
 
-#include <stdbool.h>
-#include <string.h>
+
 #ifndef SMALLPROJECT_AVL_TREE_H
 #define SMALLPROJECT_AVL_TREE_H
+#include <stdbool.h>
+#include <string.h>
 
 struct Node;
 

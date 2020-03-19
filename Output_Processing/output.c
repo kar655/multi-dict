@@ -72,23 +72,15 @@ static void del(char *commands[], int len) {
         return;
     }
 
-    // TODO zamiast kopiowac przeslac z dlugoscia o 1 mniejsza ?
-    char *sub[len - 1];
-    for (int i = 0; i < len - 1; ++i) {
-        sub[i] = commands[i];
-    }
-    AvlTree *dict = giveDict(sub, len - 1);
+    AvlTree *dict = giveDict(commands, len - 1);
     if (dict == NULL) {
         printf("OK\n");
         return;
     }
 
-    // sprawdzac czy cos usunalem w ogole
-    // na pale contains i dopiero ???
-    *giveDict(sub, len - 1) = deleteNode(*dict, commands[len - 1], false);
+    *giveDict(commands, len - 1) = deleteNode(*dict, commands[len - 1], false);
 
     printf("OK\n");
-
 }
 
 
@@ -131,18 +123,14 @@ void resetAll() {
 
 void perform(char *operation, char *commands[], int len) {
 
-    if (strcmp(operation, "ADD") == 0) {
+    if (strcmp(operation, "ADD") == 0)
         add(commands, len);
-    }
-    else if (strcmp(operation, "DEL") == 0) {
+    else if (strcmp(operation, "DEL") == 0)
         del(commands, len);
-    }
-    else if (strcmp(operation, "PRINT") == 0) {
+    else if (strcmp(operation, "PRINT") == 0)
         print(commands, len);
-    }
-    else if (strcmp(operation, "CHECK") == 0) {
+    else if (strcmp(operation, "CHECK") == 0)
         check(commands, len);
-    }
     else
         fprintf(stderr, "ERROR\n");
 }

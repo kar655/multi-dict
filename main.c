@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "Avl_Tree_lib/avl_tree.h"
 #include "Output_Processing/output.h"
 #include "Input_Processing/input.h"
 

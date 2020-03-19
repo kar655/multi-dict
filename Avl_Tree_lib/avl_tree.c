@@ -251,7 +251,7 @@ static void delNodeHelper(AvlTree *tree, bool dictCopied) {
                 removeAll((*tree)->dict); // TODO chyba nie potrzebne
             }
             free((*tree)->name);
-            **tree = *temp; // Copy the contents
+            **tree = *temp;
         }
         // the non-empty child
         free(temp);
@@ -301,7 +301,7 @@ AvlTree deleteNode(AvlTree tree, char *key, bool dictCopied) {
 
 
 bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len) {
-    if (i >= len)
+    if (i >= len)   // mozna usunac?
         return true;
     if (tree == NULL)
         return false;
@@ -311,10 +311,14 @@ bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len) {
 
         if (found == NULL)
             return false;
+        else if (i + 1 >= len)
+            return true;
+        else if (found->dict == NULL)
+            return false;
         else
             return iterateOverAllNodes(found->dict, commands, i + 1, len);
     }
-
+    // '*'
     return iterateOverAllNodes(tree->dict, commands, i + 1, len) ||
            iterateOverAllNodes(tree->left, commands, i, len) ||
            iterateOverAllNodes(tree->right, commands, i, len);
