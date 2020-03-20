@@ -295,8 +295,6 @@ AvlTree deleteNode(AvlTree tree, char *key, bool dictCopied) {
 
 
 bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len) {
-    if (i >= len)
-        return true;
     if (tree == NULL)
         return false;
 
