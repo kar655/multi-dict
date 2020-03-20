@@ -5,15 +5,35 @@
 #define _XOPEN_SOURCE 700
 
 #include "input.h"
-#include "../Avl_Tree_lib/avl_tree.h"
-#include "../Output_Processing/output.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
+#include "../Avl_Tree_lib/avl_tree.h"
+#include "../Output_Processing/output.h"
+
 
 // clear memory
+static void clear(char *comm, char *array[], int words);
+
+// checks if chars are >= 33
+static bool inputInRange(char *str, ssize_t len);
+
+// tokenize input and call actions
+static void tokenize(char *p);
+
+// free str
+static bool quit(char *str);
+
+// not enough memory
+static void memoryFail(char *str);
+
+
+// Implementation
+// ----------------------------------------------------------------------------
+
 static void clear(char *comm, char *array[], int words) {
     for (int i = 0; i < words; i++)
         free(array[i]);
@@ -21,7 +41,7 @@ static void clear(char *comm, char *array[], int words) {
     free(comm);
 }
 
-// checks if chars are >= 33
+
 static bool inputInRange(char *str, ssize_t len) {
     for (int i = 0; i < len; i++) {
         unsigned int c = (unsigned int) str[i];
@@ -35,7 +55,6 @@ static bool inputInRange(char *str, ssize_t len) {
 }
 
 
-// tokenize input and call actions
 static void tokenize(char *p) {
 
     char *array[3];
@@ -60,11 +79,12 @@ static void tokenize(char *p) {
     free(p);
 }
 
-// free str
+
 static bool quit(char *str) {
     free(str);
     return true;
 }
+
 
 // not enough memory
 static void memoryFail(char *str) {

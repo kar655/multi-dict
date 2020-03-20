@@ -2,15 +2,18 @@
 // Created by karol on 07/03/2020.
 //
 
+#include "output.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "output.h"
+
 #include "../Avl_Tree_lib/avl_tree.h"
 
 // Global data
 AvlTree data;
+
 
 // Give dict connected to data with names of subDict names[]
 static AvlTree *giveDict(char *names[], int len);

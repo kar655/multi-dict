@@ -2,14 +2,15 @@
 // Created by karol on 05/03/2020.
 //
 
+#include "avl_tree.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "avl_tree.h"
 
 
-Node {
+struct Node {
     char *name;
     AvlTree dict;
     int height;
@@ -19,9 +20,6 @@ Node {
 
 // returns bigger int
 static int max(int a, int b);
-
-// returns pointer to copied string
-char *stringCopy(char *key);
 
 // creates new node
 static AvlTree newNode(char *key);
@@ -57,17 +55,8 @@ static void delNodeHelper(AvlTree *tree, bool dictCopied);
 // Implementation
 // ----------------------------------------------------------------------------
 
-static int max(int a, int b) {
+static inline int max(int a, int b) {
     return (a >= b) ? a : b;
-}
-
-
-char *stringCopy(char *key) {
-    char *copied = (char *) malloc((strlen(key) + 1) * sizeof(char));
-    if (copied == NULL)
-        exit(1);
-    strcpy(copied, key);
-    return copied;
 }
 
 
@@ -80,17 +69,17 @@ static AvlTree newNode(char *key) {
 }
 
 
-static int getHeight(AvlTree tree) {
+static inline int getHeight(AvlTree tree) {
     return (tree == NULL) ? 0 : tree->height;
 }
 
 
-static void correctHeight(AvlTree tree) {
+static inline void correctHeight(AvlTree tree) {
     tree->height = max(getHeight(tree->left), getHeight(tree->right)) + 1;
 }
 
 
-static int balanceFactor(AvlTree tree) {
+static inline int balanceFactor(AvlTree tree) {
     if (tree == NULL)
         return 0;
     else
@@ -102,6 +91,7 @@ static void rotateLeft(AvlTree *tree) {
     AvlTree rightTree = (*tree)->right;
     (*tree)->right = rightTree->left;
     rightTree->left = *tree;
+
     correctHeight(*tree);
     correctHeight(rightTree);
     *tree = rightTree;
@@ -112,6 +102,7 @@ static void rotateRight(AvlTree *tree) {
     AvlTree leftTree = (*tree)->left;
     (*tree)->left = leftTree->right;
     leftTree->right = *tree;
+
     correctHeight(*tree);
     correctHeight(leftTree);
     *tree = leftTree;
@@ -177,6 +168,15 @@ static AvlTree minValueNode(AvlTree tree) {
 }
 
 
+char *stringCopy(char *key) {
+    char *copied = malloc((strlen(key) + 1) * sizeof(char));
+    if (copied == NULL)
+        exit(1);
+    strcpy(copied, key);
+    return copied;
+}
+
+
 void insert(AvlTree *tree, char *key) {
     if ((*tree) == NULL) {
         *tree = newNode(key);
@@ -220,7 +220,6 @@ AvlTree getNode(AvlTree tree, char *key) {
 
 
 AvlTree *getDict(AvlTree tree, char *key) {
-
     AvlTree output = getNode(tree, key);
     if (output == NULL)
         return NULL;
@@ -229,27 +228,23 @@ AvlTree *getDict(AvlTree tree, char *key) {
 }
 
 
-bool contains(AvlTree tree, char *key) {
-    return getNode(tree, key) != NULL;
-}
-
 static void delNodeHelper(AvlTree *tree, bool dictCopied) {
     if ((*tree)->left == NULL || (*tree)->right == NULL) {
         // not Null child
         AvlTree temp = (*tree)->left ? (*tree)->left : (*tree)->right;
 
         if (temp == NULL) { // No child case
-            if (!dictCopied) {
+            if (!dictCopied)
                 removeAll((*tree)->dict);
-            }
+
             free((*tree)->name);
             free(*tree);
             *tree = NULL;
         }
         else { // One child case
-            if (!dictCopied) {
-                removeAll((*tree)->dict); // TODO chyba nie potrzebne
-            }
+            if (!dictCopied)
+                removeAll((*tree)->dict);
+
             free((*tree)->name);
             **tree = *temp;
         }
@@ -268,8 +263,7 @@ static void delNodeHelper(AvlTree *tree, bool dictCopied) {
         (*tree)->dict = NULL;
         (*tree)->dict = temp->dict;
 
-        // Delete copied
-        /// usunac ale nie usuwac dict bo skopiowalem
+        // Delete copied but not it's dictionary
         (*tree)->right = deleteNode((*tree)->right, temp->name, true);
     }
 }
@@ -301,7 +295,7 @@ AvlTree deleteNode(AvlTree tree, char *key, bool dictCopied) {
 
 
 bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len) {
-    if (i >= len)   // mozna usunac?
+    if (i >= len)
         return true;
     if (tree == NULL)
         return false;
@@ -329,14 +323,9 @@ bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len) {
 void removeAll(AvlTree tree) {
     if (tree != NULL) {
         removeAll(tree->left);
-        tree->left = NULL;
         removeAll(tree->right);
-        tree->right = NULL;
         removeAll(tree->dict);
-        tree->dict = NULL;
         free(tree->name);
-        tree->name = NULL;
         free(tree);
-        tree = NULL;
     }
 }

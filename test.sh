@@ -5,7 +5,7 @@ passed=0
 all=0
 
 for f in $(find "$2" -name "*.in"); do
-  echo -n "Testing ${f%.in}: "
+  echo -n "Testing ${f%.in} "
   tmpOut=$(mktemp "TestXXXXXX.out")
   tmpErr=$(mktemp "TestXXXXXX.err")
 
