@@ -14,7 +14,7 @@ Node {
     AvlTree dict;
     int height;
     AvlTree left, right;
-};
+}; // a to nie powinno być w .h?
 
 
 // returns bigger int
@@ -57,13 +57,13 @@ static void delNodeHelper(AvlTree *tree, bool dictCopied);
 // Implementation
 // ----------------------------------------------------------------------------
 
-static int max(int a, int b) {
+static inline int max(int a, int b) {
     return (a >= b) ? a : b;
 }
 
 
 char *stringCopy(char *key) {
-    char *copied = (char *) malloc((strlen(key) + 1) * sizeof(char));
+    char *copied = (char *) malloc((strlen(key) + 1) * sizeof(char)); // podobno lepiej nie rzutować malloca, ale nie wiem dlaczego :/
     if (copied == NULL)
         exit(1);
     strcpy(copied, key);
@@ -80,17 +80,17 @@ static AvlTree newNode(char *key) {
 }
 
 
-static int getHeight(AvlTree tree) {
+static inline int getHeight(AvlTree tree) {
     return (tree == NULL) ? 0 : tree->height;
 }
 
 
-static void correctHeight(AvlTree tree) {
+static inline void correctHeight(AvlTree tree) {
     tree->height = max(getHeight(tree->left), getHeight(tree->right)) + 1;
 }
 
 
-static int balanceFactor(AvlTree tree) {
+static inline int balanceFactor(AvlTree tree) {
     if (tree == NULL)
         return 0;
     else
@@ -220,7 +220,6 @@ AvlTree getNode(AvlTree tree, char *key) {
 
 
 AvlTree *getDict(AvlTree tree, char *key) {
-
     AvlTree output = getNode(tree, key);
     if (output == NULL)
         return NULL;
@@ -329,7 +328,7 @@ bool iterateOverAllNodes(AvlTree tree, char *commands[], int i, int len) {
 void removeAll(AvlTree tree) {
     if (tree != NULL) {
         removeAll(tree->left);
-        tree->left = NULL;
+        tree->left = NULL; // na pewno potrzebne? I tak w 338 czyścisz tę pamięć
         removeAll(tree->right);
         tree->right = NULL;
         removeAll(tree->dict);

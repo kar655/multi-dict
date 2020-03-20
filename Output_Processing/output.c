@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+
 #include "output.h"
 #include "../Avl_Tree_lib/avl_tree.h"
 

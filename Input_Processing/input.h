@@ -4,6 +4,7 @@
 
 #ifndef SMALLPROJECT_INPUT_H
 #define SMALLPROJECT_INPUT_H
+
 #include <stdbool.h>
 
 bool processLine();

@@ -4,13 +4,14 @@
 
 #define _XOPEN_SOURCE 700
 
-#include "input.h"
-#include "../Avl_Tree_lib/avl_tree.h"
-#include "../Output_Processing/output.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
+#include "input.h"
+#include "../Avl_Tree_lib/avl_tree.h"
+#include "../Output_Processing/output.h"
 
 
 // clear memory
@@ -20,6 +21,7 @@ static void clear(char *comm, char *array[], int words) {
 
     free(comm);
 }
+
 
 // checks if chars are >= 33
 static bool inputInRange(char *str, ssize_t len) {
@@ -60,11 +62,13 @@ static void tokenize(char *p) {
     free(p);
 }
 
+
 // free str
 static bool quit(char *str) {
     free(str);
     return true;
 }
+
 
 // not enough memory
 static void memoryFail(char *str) {

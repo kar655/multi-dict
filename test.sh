@@ -10,8 +10,8 @@ for f in $(find "$2" -name "*.in"); do
   tmpErr=$(mktemp "TestXXXXXX.err")
 
   # time
-  "$1" <"$f" >"$tmpOut" 2>"$tmpErr"
-  # valgrind -q --error-exitcode=15 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "$1" <"$f" >"$tmpOut" 2>"$tmpErr"
+  # "$1" <"$f" >"$tmpOut" 2>"$tmpErr"
+  valgrind -q --error-exitcode=15 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "$1" <"$f" >"$tmpOut" 2>"$tmpErr"
 
   if diff -q "${f%in}out" "$tmpOut" && diff -q "${f%in}err" "$tmpErr"; then
     echo "succeded"
