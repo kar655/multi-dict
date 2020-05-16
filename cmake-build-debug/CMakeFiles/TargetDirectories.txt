@@ -1,3 +1,0 @@
-/home/karol/Desktop/MIMUW/IPP/smallProject/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/karol/Desktop/MIMUW/IPP/smallProject/cmake-build-debug/CMakeFiles/smallProject.dir
-/home/karol/Desktop/MIMUW/IPP/smallProject/cmake-build-debug/CMakeFiles/edit_cache.dir
